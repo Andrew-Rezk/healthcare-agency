@@ -604,9 +604,11 @@ const App = () => {
       <footer className="bg-slate-50 border-t border-slate-200 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="bg-teal-600 p-1.5 rounded-lg">
-              <Activity className="h-4 w-4 text-white" />
-            </div>
+<img 
+  src="/logo.jpg" 
+  alt="Logo" 
+  className="h-10 w-auto rounded-lg object-contain" 
+/>
             <span className="font-bold text-lg text-slate-900">
               Medi<span className="text-teal-600">Web</span>
             </span>
