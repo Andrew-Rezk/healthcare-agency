@@ -340,10 +340,10 @@ const handleFormSubmit = async (e) => {
                     <div className="text-3xl font-bold text-white mb-1">24/7</div>
                     <div className="text-sm text-slate-400">Uptime & Support Monitoring</div>
                  </div>
-                 <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-700">
-                    <div className="text-3xl font-bold text-white mb-1">50+</div>
-                    <div className="text-sm text-slate-400">Clinics Served</div>
-                 </div>
+                  <div className="bg-slate-900/50 p-6 rounded-xl border border-slate-700">
+                    <div className="text-3xl font-bold text-white mb-1">90+</div>
+                    <div className="text-sm text-slate-400">Google Performance Score</div>
+                  </div>
                </div>
             </div>
           </div>
