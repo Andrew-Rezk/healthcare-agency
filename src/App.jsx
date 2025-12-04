@@ -49,9 +49,11 @@ const App = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex-shrink-0 flex items-center gap-2">
-              <div className="bg-teal-600 p-2 rounded-lg">
-                <Activity className="h-6 w-6 text-white" />
-              </div>
+<img 
+  src="/logo.jpg" 
+  alt="Logo" 
+  className="h-10 w-auto rounded-lg object-contain" 
+/>
               <span className="font-bold text-xl tracking-tight text-slate-900">
                 Medi<span className="text-teal-600">Web</span> Solutions
               </span>
