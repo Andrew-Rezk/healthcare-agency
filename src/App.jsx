@@ -23,21 +23,46 @@ const App = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
-  const handleFormSubmit = (e) => {
+const handleFormSubmit = async (e) => {
     e.preventDefault();
     setFormStatus('submitting');
-    // Simulate API call
-    setTimeout(() => {
-      setFormStatus('success');
-      // Reset after 3 seconds
-      setTimeout(() => setFormStatus('idle'), 3000);
-    }, 1500);
-  };
 
+    const formData = new FormData(e.target);
+    
+    // YOUR REAL FORMSPREE LINK
+    const endpoint = "https://formspree.io/f/myzrpwep";
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        setFormStatus('success');
+        e.target.reset(); // Clears the form inputs
+      } else {
+        // Formspree rejected it (usually spam protection)
+        console.error("Formspree error");
+        setFormStatus('idle');
+        alert("Oops! There was a problem submitting your form. Please try again.");
+      }
+    } catch (error) {
+      console.error("Network error", error);
+      setFormStatus('idle');
+      alert("Error submitting form. Please check your internet connection.");
+    }
+    
+    // Reset success message after 3 seconds
+    setTimeout(() => setFormStatus('idle'), 3000);
+  };
   const navLinks = [
     { name: 'Services', href: '#services' },
     { name: 'Expertise', href: '#expertise' },
-    { name: 'Work', href: '#work' },
+    // { name: 'Work', href: '#work' },
     { name: 'Process', href: '#process' },
     { name: 'Contact', href: '#contact' },
   ];
@@ -281,7 +306,7 @@ const App = () => {
                   </div>
                   <div>
                     <h4 className="text-xl font-semibold mb-1">Pharmacy Solutions</h4>
-                    <p className="text-slate-400">Integration with prescription refill request forms and inventory showcases.</p>
+                    <p className="text-slate-400">Integration with prescription refill request forms</p>
                   </div>
                 </div>
 
@@ -325,7 +350,7 @@ const App = () => {
         </div>
       </section>
 
-      {/* Portfolio / Work Section */}
+{/* Portfolio / Work Section - CURRENTLY HIDDEN
       <section id="work" className="py-24 bg-slate-50 border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
@@ -341,111 +366,108 @@ const App = () => {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Case Study 1 */}
+            
             <div className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300 flex flex-col">
               <div className="h-48 bg-emerald-50 relative overflow-hidden flex items-center justify-center group-hover:bg-emerald-100 transition-colors">
-                 {/* Abstract UI representation */}
-                 <div className="w-3/4 h-3/4 bg-white rounded-t-xl shadow-sm border border-slate-100 p-4 transform translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
+                  <div className="w-3/4 h-3/4 bg-white rounded-t-xl shadow-sm border border-slate-100 p-4 transform translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
                     <div className="flex gap-2 mb-3">
-                       <div className="w-2 h-2 rounded-full bg-slate-200"></div>
-                       <div className="w-2 h-2 rounded-full bg-slate-200"></div>
+                        <div className="w-2 h-2 rounded-full bg-slate-200"></div>
+                        <div className="w-2 h-2 rounded-full bg-slate-200"></div>
                     </div>
                     <div className="space-y-2">
-                       <div className="w-full h-2 bg-slate-100 rounded"></div>
-                       <div className="w-2/3 h-2 bg-slate-100 rounded"></div>
-                       <div className="flex gap-2 mt-4">
+                        <div className="w-full h-2 bg-slate-100 rounded"></div>
+                        <div className="w-2/3 h-2 bg-slate-100 rounded"></div>
+                        <div className="flex gap-2 mt-4">
                           <div className="w-8 h-8 rounded bg-emerald-100"></div>
                           <div className="flex-1 space-y-1">
-                             <div className="w-full h-1.5 bg-slate-100 rounded"></div>
-                             <div className="w-3/4 h-1.5 bg-slate-100 rounded"></div>
+                              <div className="w-full h-1.5 bg-slate-100 rounded"></div>
+                              <div className="w-3/4 h-1.5 bg-slate-100 rounded"></div>
                           </div>
-                       </div>
+                        </div>
                     </div>
-                 </div>
-                 <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-sm">
+                  </div>
+                  <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-sm">
                     <Pill className="h-5 w-5 text-emerald-600" />
-                 </div>
+                  </div>
               </div>
               <div className="p-8 flex-1 flex flex-col">
                 <div className="mb-4">
-                   <span className="text-xs font-bold tracking-wider text-emerald-600 uppercase bg-emerald-50 px-3 py-1 rounded-full">Pharmacy</span>
+                    <span className="text-xs font-bold tracking-wider text-emerald-600 uppercase bg-emerald-50 px-3 py-1 rounded-full">Pharmacy</span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-teal-600 transition-colors">City Central Pharmacy</h3>
                 <p className="text-slate-600 mb-6 flex-1">
                   Automated prescription refill system that reduced phone call volume by 60% and improved inventory tracking.
                 </p>
                 <div className="pt-6 border-t border-slate-100 flex justify-between items-center">
-                   <div className="text-sm font-medium text-slate-900">Custom Web App</div>
-                   <ArrowUpRight className="h-5 w-5 text-slate-400 group-hover:text-teal-600 transition-colors" />
+                    <div className="text-sm font-medium text-slate-900">Custom Web App</div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400 group-hover:text-teal-600 transition-colors" />
                 </div>
               </div>
             </div>
 
-            {/* Case Study 2 */}
             <div className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300 flex flex-col">
               <div className="h-48 bg-blue-50 relative overflow-hidden flex items-center justify-center group-hover:bg-blue-100 transition-colors">
                   <div className="w-3/4 h-3/4 bg-white rounded-t-xl shadow-sm border border-slate-100 p-4 transform translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
                     <div className="flex justify-between items-center mb-4">
-                       <div className="w-8 h-8 rounded-full bg-blue-100"></div>
-                       <div className="w-16 h-2 bg-slate-100 rounded"></div>
+                        <div className="w-8 h-8 rounded-full bg-blue-100"></div>
+                        <div className="w-16 h-2 bg-slate-100 rounded"></div>
                     </div>
                     <div className="grid grid-cols-2 gap-2">
-                       <div className="h-16 bg-slate-50 rounded border border-slate-100"></div>
-                       <div className="h-16 bg-slate-50 rounded border border-slate-100"></div>
+                        <div className="h-16 bg-slate-50 rounded border border-slate-100"></div>
+                        <div className="h-16 bg-slate-50 rounded border border-slate-100"></div>
                     </div>
-                 </div>
-                 <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-sm">
+                  </div>
+                  <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-sm">
                     <Stethoscope className="h-5 w-5 text-blue-600" />
-                 </div>
+                  </div>
               </div>
               <div className="p-8 flex-1 flex flex-col">
                 <div className="mb-4">
-                   <span className="text-xs font-bold tracking-wider text-blue-600 uppercase bg-blue-50 px-3 py-1 rounded-full">Cardiology Clinic</span>
+                    <span className="text-xs font-bold tracking-wider text-blue-600 uppercase bg-blue-50 px-3 py-1 rounded-full">Cardiology Clinic</span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-teal-600 transition-colors">Oak Heart Specialists</h3>
                 <p className="text-slate-600 mb-6 flex-1">
                   Secure patient portal integration allowing for HIPAA-compliant document sharing and appointment history.
                 </p>
                 <div className="pt-6 border-t border-slate-100 flex justify-between items-center">
-                   <div className="text-sm font-medium text-slate-900">Portal Integration</div>
-                   <ArrowUpRight className="h-5 w-5 text-slate-400 group-hover:text-teal-600 transition-colors" />
+                    <div className="text-sm font-medium text-slate-900">Portal Integration</div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400 group-hover:text-teal-600 transition-colors" />
                 </div>
               </div>
             </div>
 
-            {/* Case Study 3 */}
             <div className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300 flex flex-col">
               <div className="h-48 bg-indigo-50 relative overflow-hidden flex items-center justify-center group-hover:bg-indigo-100 transition-colors">
                   <div className="w-3/4 h-3/4 bg-white rounded-t-xl shadow-sm border border-slate-100 p-4 transform translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
-                     <div className="w-full h-8 bg-indigo-50 mb-3 rounded flex items-center px-2">
+                      <div className="w-full h-8 bg-indigo-50 mb-3 rounded flex items-center px-2">
                         <div className="w-1/2 h-2 bg-indigo-200 rounded"></div>
-                     </div>
-                     <div className="space-y-2">
+                      </div>
+                      <div className="space-y-2">
                         <div className="flex gap-2 items-center">
-                           <div className="w-3 h-3 rounded-full bg-slate-200"></div>
-                           <div className="w-full h-1.5 bg-slate-100 rounded"></div>
+                            <div className="w-3 h-3 rounded-full bg-slate-200"></div>
+                            <div className="w-full h-1.5 bg-slate-100 rounded"></div>
                         </div>
                         <div className="flex gap-2 items-center">
-                           <div className="w-3 h-3 rounded-full bg-slate-200"></div>
-                           <div className="w-full h-1.5 bg-slate-100 rounded"></div>
+                            <div className="w-3 h-3 rounded-full bg-slate-200"></div>
+                            <div className="w-full h-1.5 bg-slate-100 rounded"></div>
                         </div>
-                     </div>
-                 </div>
-                 <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-sm">
+                      </div>
+                  </div>
+                  <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-sm">
                     <Monitor className="h-5 w-5 text-indigo-600" />
-                 </div>
+                  </div>
               </div>
               <div className="p-8 flex-1 flex flex-col">
                 <div className="mb-4">
-                   <span className="text-xs font-bold tracking-wider text-indigo-600 uppercase bg-indigo-50 px-3 py-1 rounded-full">Multi-Location</span>
+                    <span className="text-xs font-bold tracking-wider text-indigo-600 uppercase bg-indigo-50 px-3 py-1 rounded-full">Multi-Location</span>
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2 group-hover:text-teal-600 transition-colors">Valley Dental Group</h3>
                 <p className="text-slate-600 mb-6 flex-1">
                   A high-speed, SEO-optimized site unifying 5 locations, resulting in a 40% increase in organic local traffic.
                 </p>
                 <div className="pt-6 border-t border-slate-100 flex justify-between items-center">
-                   <div className="text-sm font-medium text-slate-900">SEO & Identity</div>
-                   <ArrowUpRight className="h-5 w-5 text-slate-400 group-hover:text-teal-600 transition-colors" />
+                    <div className="text-sm font-medium text-slate-900">SEO & Identity</div>
+                    <ArrowUpRight className="h-5 w-5 text-slate-400 group-hover:text-teal-600 transition-colors" />
                 </div>
               </div>
             </div>
@@ -458,6 +480,7 @@ const App = () => {
           </div>
         </div>
       </section>
+      */}
 
       {/* Process Section */}
       <section id="process" className="py-24 bg-slate-50">
@@ -521,7 +544,7 @@ const App = () => {
                   </div>
                 </div>
                 <div className="mt-12 text-sm text-teal-200">
-                  &copy; 2024 MediWeb Solutions.
+                  &copy; {new Date().getFullYear()} MediWeb Solutions.
                 </div>
               </div>
 
@@ -532,6 +555,7 @@ const App = () => {
                     <input
                       type="text"
                       id="name"
+                      name="name"
                       required
                       className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all outline-none"
                       placeholder="Dr. Jane Smith"
@@ -543,6 +567,7 @@ const App = () => {
                     <input
                       type="email"
                       id="email"
+                      name='email'
                       required
                       className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all outline-none"
                       placeholder="jane@clinic.com"
@@ -553,6 +578,7 @@ const App = () => {
                     <label htmlFor="type" className="block text-sm font-medium text-slate-700 mb-1">Practice Type</label>
                     <select
                       id="type"
+                      name="type"
                       className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all outline-none"
                     >
                       <option>General Practice Clinic</option>
@@ -567,6 +593,7 @@ const App = () => {
                     <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-1">Message</label>
                     <textarea
                       id="message"
+                      name="message"
                       rows="3"
                       className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all outline-none resize-none"
                       placeholder="Tell us about your needs..."
@@ -614,10 +641,10 @@ const App = () => {
             </span>
           </div>
           <div className="flex gap-8 text-sm text-slate-500">
-            <a href="#" className="hover:text-teal-600 transition-colors">Privacy Policy</a>
+            {/* <a href="#" className="hover:text-teal-600 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-teal-600 transition-colors">Terms of Service</a>
             <a href="#" className="hover:text-teal-600 transition-colors">LinkedIn</a>
-            <a href="#" className="hover:text-teal-600 transition-colors">Twitter</a>
+            <a href="#" className="hover:text-teal-600 transition-colors">Twitter</a> */}
           </div>
           <div className="text-slate-400 text-sm">
             Designed for Healthcare.
